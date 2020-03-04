@@ -16,10 +16,10 @@ extern crate uuid;
 
 mod app;
 mod models;
-// mod schema;
-// mod errors;
-// mod invitation_handler;
-// mod invitation_routes;
+mod schema;
+mod errors;
+mod invitation_handler;
+mod invitation_routes;
 
 use models::DbExecutor;
 use actix::prelude::*;
