@@ -16,7 +16,7 @@ extern crate uuid;
 
 mod app;
 mod models;
-mod schema;
+// mod schema;
 // mod errors;
 // mod invitation_handler;
 // mod invitation_routes;

@@ -1,7 +1,7 @@
 // app.rs
 use actix::prelude::*;
 use actix_web::{http::Method, middleware, App};
-use models::DbExecutor;
+use crate::models::DbExecutor;
 
 pub struct AppState {
     pub db: Addr<DbExecutor>,
