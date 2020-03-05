@@ -62,7 +62,7 @@ $ curl --request POST \
 
 ```
 
-如果使用改 token 再注册一次，则提示错误：
+如果使用该 token 再注册一次，则提示错误：
 ```shell
 BadRequest: Key (email)=(flyqtest1@gmail.com) already exists.
 ```
