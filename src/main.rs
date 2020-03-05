@@ -4,35 +4,37 @@
 
 extern crate actix;
 extern crate actix_web;
-extern crate serde;
+extern crate bcrypt;
 extern crate chrono;
 extern crate dotenv;
+extern crate env_logger;
 extern crate futures;
 extern crate r2d2;
+extern crate serde;
 extern crate uuid;
-extern crate env_logger;
-extern crate bcrypt;
-#[macro_use] extern crate diesel;
-#[macro_use] extern crate serde_derive;
-#[macro_use] extern crate failure;
+#[macro_use]
+extern crate diesel;
+#[macro_use]
+extern crate serde_derive;
+#[macro_use]
+extern crate failure;
 
 mod app;
-mod models;
-mod schema;
 mod errors;
 mod invitation_handler;
 mod invitation_routes;
+mod models;
 mod register_handler;
 mod register_routes;
+mod schema;
 mod utils;
 
-use models::DbExecutor;
 use actix::prelude::*;
 use actix_web::server;
 use diesel::{r2d2::ConnectionManager, PgConnection};
 use dotenv::dotenv;
+use models::DbExecutor;
 use std::env;
-
 
 fn main() {
     dotenv().ok();
@@ -47,7 +49,7 @@ fn main() {
         .build(manager)
         .expect("Failed to create pool.");
 
-    let address :Addr<DbExecutor>  = SyncArbiter::start(4, move || DbExecutor(pool.clone()));
+    let address: Addr<DbExecutor> = SyncArbiter::start(4, move || DbExecutor(pool.clone()));
 
     server::new(move || app::create_app(address.clone()))
         .bind("127.0.0.1:3000")

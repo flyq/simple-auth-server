@@ -1,9 +1,9 @@
+use crate::errors::ServiceError;
+use crate::models::{DbExecutor, Invitation};
 use actix::{Handler, Message};
 use chrono::{Duration, Local};
 use diesel::result::{DatabaseErrorKind, Error::DatabaseError};
 use diesel::{self, prelude::*};
-use crate::errors::ServiceError;
-use crate::models::{DbExecutor, Invitation};
 use uuid::Uuid;
 
 #[derive(Debug, Deserialize)]
@@ -35,7 +35,7 @@ impl Handler<CreateInvitation> for DbExecutor {
             .values(&new_invitation)
             .execute(conn)
             .map_err(|error| {
-                println!("{:#?}",error); // for debugging purposes
+                println!("{:#?}", error); // for debugging purposes
                 ServiceError::InternalServerError
             })?;
 
