@@ -35,36 +35,52 @@ cargo run
 
 ## 访问示例
 ```shell
-$ curl --request POST   --url http://localhost:3000/api/invitation   --header 'content-type: application/json'   --data '{"email":"flyq951@gmail.com"}'
+$ curl --request POST   --url http://localhost:3000/api/invitation   --header 'content-type: application/json'   --data '{"email":"flyqtest1@gmail.com"}'
 
+
+# log:
 {
-    "id": "67ff8c73-cd16-4bd7-8931-87aa1fc3d9fa",
-    "email": "test@test.com",
-    "expires_at": "2018-10-23T09:49:12.167510"
+    id: 6889d452-467e-45e2-a2cb-3ea0523e6e71,
+    email: "flyqtest1@gmail.com",
+    expires_at: 2020-03-06T10:28:19.546105,
 }
 
+```
+
+```shell
+
 $ curl --request POST \
-  --url http://localhost:3000/api/register/67ff8c73-cd16-4bd7-8931-87aa1fc3d9fa \
-  --header 'content-type: application/json' \
-  --data '{"password":"password"}'
+>   --url http://localhost:3000/api/register/6889d452-467e-45e2-a2cb-3ea0523e6e71 \
+>   --header 'content-type: application/json' \
+>   --data '{"password":"flyqtestpw"}'
 
-BadRequest: Key (email)=(flyq951@gmail.com) already exists.
+# return
+{"email":"flyqtest1@gmail.com"}
 
+# log
+[2020-03-05T10:28:50Z INFO  actix_web::middleware::logger] 127.0.0.1:47558 "POST /api/register/6889d452-467e-45e2-a2cb-3ea0523e6e71 HTTP/1.1" 200 31 "-" "curl/7.58.0" 2.163482
 
+```
 
+如果使用改 token 再注册一次，则提示错误：
+```shell
+BadRequest: Key (email)=(flyqtest1@gmail.com) already exists.
+```
 
+得到cookie：
+```shell
 $ curl -i --request POST \
 >   --url http://localhost:3000/api/auth \
 >   --header 'content-type: application/json' \
->   --data '{"email": "flyq951@gmail.com","password":"password"}'
+>   --data '{"email": "flyqtest1@gmail.com","password":"flyqtestpw"}'
+
+# return
 HTTP/1.1 200 OK
 content-length: 0
 set-cookie: auth=WAfszoYb9iP/uG8OCf5X05syHSrHOPDkegq4RbX7NV63EcZTt+/X8ZmnFZL2gOz1fMp+xTpwsgil; HttpOnly; Path=/; Domain=localhost; Max-Age=86400
 date: Thu, 05 Mar 2020 09:29:01 GMT
 
-```
-
-```shell
+# log
 [2020-03-05T09:27:09Z INFO  actix_web::middleware::logger] 127.0.0.1:47310 "POST /api/register/67ff8c73-cd16-4bd7-8931-87aa1fc3d9fa HTTP/1.1" 200 29 "-" "curl/7.58.0" 2.171168
 ```
 
