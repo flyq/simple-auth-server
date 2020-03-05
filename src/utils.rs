@@ -1,12 +1,30 @@
 use crate::errors::ServiceError;
-use bcrypt::{hash, DEFAULT_COST};
-use std::env;
+use argonautica::{Hasher, Verifier};
 
-pub fn hash_password(plain: &str) -> Result<String, ServiceError> {
-    // get the hashing cost from the env variable or use default
-    let hashing_cost: u32 = match env::var("HASH_ROUNDS") {
-        Ok(cost) => cost.parse().unwrap_or(DEFAULT_COST),
-        _ => DEFAULT_COST,
-    };
-    hash(plain, hashing_cost).map_err(|_| ServiceError::InternalServerError)
+lazy_static::lazy_static! {
+pub  static ref SECRET_KEY: String = std::env::var("SECRET_KEY").unwrap_or_else(|_| "0123".repeat(8));
+}
+
+// WARNING THIS IS ONLY FOR DEMO PLEASE DO MORE RESEARCH FOR PRODUCTION USE
+pub fn hash_password(password: &str) -> Result<String, ServiceError> {
+    Hasher::default()
+        .with_password(password)
+        .with_secret_key(SECRET_KEY.as_str())
+        .hash()
+        .map_err(|err| {
+            dbg!(err);
+            ServiceError::InternalServerError
+        })
+}
+
+pub fn verify(hash: &str, password: &str) -> Result<bool, ServiceError> {
+    Verifier::default()
+        .with_hash(hash)
+        .with_password(password)
+        .with_secret_key(SECRET_KEY.as_str())
+        .verify()
+        .map_err(|err| {
+            dbg!(err);
+            ServiceError::Unauthorized
+        })
 }
