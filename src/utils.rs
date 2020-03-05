@@ -1,5 +1,5 @@
 use bcrypt::{hash, DEFAULT_COST};
-use errors::ServiceError;
+use crate::errors::ServiceError;
 use std::env;
 
 pub fn hash_password(plain: &str) -> Result<String, ServiceError> {

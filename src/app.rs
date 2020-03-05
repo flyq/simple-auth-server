@@ -2,7 +2,7 @@
 use actix::prelude::*;
 use actix_web::{http::Method, middleware, App};
 use crate::models::DbExecutor;
-use register_routes::register_user;
+use crate::register_routes::register_user;
 
 pub struct AppState {
     pub db: Addr<DbExecutor>,
