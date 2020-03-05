@@ -10,6 +10,8 @@ extern crate dotenv;
 extern crate futures;
 extern crate r2d2;
 extern crate uuid;
+extern crate env_logger;
+extern crate bcrypt;
 #[macro_use] extern crate diesel;
 #[macro_use] extern crate serde_derive;
 #[macro_use] extern crate failure;
@@ -20,6 +22,9 @@ mod schema;
 mod errors;
 mod invitation_handler;
 mod invitation_routes;
+mod register_handler;
+mod register_routes;
+mod utils;
 
 use models::DbExecutor;
 use actix::prelude::*;
@@ -31,6 +36,8 @@ use std::env;
 
 fn main() {
     dotenv().ok();
+    std::env::set_var("RUST_LOG", "simple-auth-server=debug,actix_web=info");
+    env_logger::init();
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
     let sys = actix::System::new("Actix_Tutorial");
 

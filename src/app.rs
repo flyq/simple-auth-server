@@ -2,6 +2,7 @@
 use actix::prelude::*;
 use actix_web::{http::Method, middleware, App};
 use crate::models::DbExecutor;
+use register_routes::register_user;
 
 pub struct AppState {
     pub db: Addr<DbExecutor>,
@@ -21,5 +22,8 @@ pub fn create_app(db: Addr<DbExecutor>) -> App<AppState> {
         })
         // routes to register as a user after the
         .resource("/register/", |r| {
+        })
+        .resource("/register/{invitation_id}", |r| {
+            r.method(Method::POST).with(register_user);
         })
 }
