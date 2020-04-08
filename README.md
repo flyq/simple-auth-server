@@ -75,10 +75,7 @@ $ curl --request POST   --url http://localhost:3000/api/invitation   --header 'c
 
 ```shell
 
-$ curl --request POST \
->   --url http://localhost:3000/api/register/6889d452-467e-45e2-a2cb-3ea0523e6e71 \
->   --header 'content-type: application/json' \
->   --data '{"password":"flyqtestpw"}'
+$ curl --request POST  --url http://localhost:3000/api/register/6889d452-467e-45e2-a2cb-3ea0523e6e71  --header 'content-type: application/json'  --data '{"password":"flyqtestpw"}'
 
 # return
 {"email":"flyqtest1@gmail.com"}
@@ -95,10 +92,7 @@ BadRequest: Key (email)=(flyqtest1@gmail.com) already exists.
 
 得到cookie：
 ```shell
-$ curl -i --request POST \
->   --url http://localhost:3000/api/auth \
->   --header 'content-type: application/json' \
->   --data '{"email": "flyqtest1@gmail.com","password":"flyqtestpw"}'
+$ curl -i --request POST --url http://localhost:3000/api/auth  --header 'content-type: application/json'  --data '{"email": "flyqtest1@gmail.com","password":"flyqtestpw"}'
 
 # return
 HTTP/1.1 200 OK
@@ -108,5 +102,18 @@ date: Thu, 05 Mar 2020 09:29:01 GMT
 
 # log
 [2020-03-05T09:27:09Z INFO  actix_web::middleware::logger] 127.0.0.1:47310 "POST /api/register/67ff8c73-cd16-4bd7-8931-87aa1fc3d9fa HTTP/1.1" 200 29 "-" "curl/7.58.0" 2.171168
+
+
+
+curl -i --request GET  --url http://localhost:3000/auth  --cookie auth=WAfszoYb9iP/uG8OCf5X05syHSrHOPDkegq4RbX7NV63EcZTt+/X8ZmnFZL2gOz1fMp+xTpwsgil
+
+
+#log
+HTTP/1.1 200 OK
+content-length: 31
+content-type: application/json
+date: Wed, 08 Apr 2020 07:38:05 GMT
+
+{"email":"flyqtest1@gmail.com"}
 ```
 
