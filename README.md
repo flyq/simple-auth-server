@@ -7,7 +7,12 @@ https://gill.net.in/posts/auth-microservice-rust-actix-web1.0-diesel-complete-tu
 - [simple-auth-server](#simple-auth-server)
   - [`Contents`](#contents)
   - [环境](#%e7%8e%af%e5%a2%83)
-  - [其他事项](#%e5%85%b6%e4%bb%96%e4%ba%8b%e9%a1%b9)
+  - [步骤](#%e6%ad%a5%e9%aa%a4)
+    - [1. 按照环境把环境配置好，在postgres里面生成数据库](#1-%e6%8c%89%e7%85%a7%e7%8e%af%e5%a2%83%e6%8a%8a%e7%8e%af%e5%a2%83%e9%85%8d%e7%bd%ae%e5%a5%bd%e5%9c%a8postgres%e9%87%8c%e9%9d%a2%e7%94%9f%e6%88%90%e6%95%b0%e6%8d%ae%e5%ba%93)
+    - [2. 拉取代码](#2-%e6%8b%89%e5%8f%96%e4%bb%a3%e7%a0%81)
+    - [3. 修改配置文件 .env](#3-%e4%bf%ae%e6%94%b9%e9%85%8d%e7%bd%ae%e6%96%87%e4%bb%b6-env)
+    - [4. 新建数据库 simple-auth-server](#4-%e6%96%b0%e5%bb%ba%e6%95%b0%e6%8d%ae%e5%ba%93-simple-auth-server)
+    - [5. 然后运行：](#5-%e7%84%b6%e5%90%8e%e8%bf%90%e8%a1%8c)
   - [访问示例](#%e8%ae%bf%e9%97%ae%e7%a4%ba%e4%be%8b)
 
 
@@ -19,15 +24,36 @@ https://gill.net.in/posts/auth-microservice-rust-actix-web1.0-diesel-complete-tu
 
 环境安装参考：[Rust Actix-Web 验证 Auth Web 微服务](https://github.com/flyq/blogs/blob/master/Rust%20%E5%AD%A6%E4%B9%A0/token%20%E8%AE%A4%E8%AF%81/README.md)。
 
-## 其他事项
+## 步骤
+### 1. 按照[环境](#%e7%8e%af%e5%a2%83)把环境配置好，在postgres里面生成数据库
+
+### 2. 拉取代码
+```shell
+git clone https://github.com/flyq/simple-auth-server.git
+```
+### 3. 修改配置文件 .env
 注意新建 .env 文件并且设置：
 ```.env
 DATABASE_URL=postgres://<database user>:<database user's password>@localhost/<database name>
 SPARKPOST_API_KEY='<mail's KEY>'
 SENDING_EMAIL_ADDRESS='<mail's address>'
 ```
+参考：
+```shell
+DATABASE_URL=postgres://ubuntu:123456@localhost/simple-auth-server
+SPARKPOST_API_KEY='111'
+SENDING_EMAIL_ADDRESS='11111@163.com'
+```
+### 4. 新建数据库 simple-auth-server
+```shell
+$ diesel setup
+Creating database: simple-auth-server
+Running migration 2020-03-04-091801_users
+Running migration 2020-03-04-091813_invitations
+```
+创建成功。
 
-然后运行：
+### 5. 然后运行：
 ```shell
 cargo run
 ```
