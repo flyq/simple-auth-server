@@ -2,6 +2,7 @@ use actix_web::{error::BlockingError, web, HttpResponse};
 use diesel::{prelude::*, PgConnection};
 use futures::Future;
 
+
 use crate::email_service::send_invitation;
 use crate::errors::ServiceError;
 use crate::models::{Invitation, Pool};
@@ -18,7 +19,7 @@ pub fn post_invitation(
     // run diesel blocking code
     web::block(move || create_invitation(invitation_data.into_inner().email, pool)).then(|res| {
         match res {
-            Ok(_) => Ok(HttpResponse::Ok().finish()),
+            Ok(invite) => Ok(HttpResponse::Ok().json(&invite)),
             Err(err) => match err {
                 BlockingError::Error(service_error) => Err(service_error),
                 BlockingError::Canceled => Err(ServiceError::InternalServerError),
@@ -27,12 +28,14 @@ pub fn post_invitation(
     })
 }
 
+
 fn create_invitation(
     eml: String,
     pool: web::Data<Pool>,
-) -> Result<(), crate::errors::ServiceError> {
+) -> Result<Invitation, crate::errors::ServiceError> {
     let invitation = dbg!(query(eml, pool)?);
-    send_invitation(&invitation)
+    //send_invitation(&invitation)
+    Ok(invitation.into())
 }
 
 /// Diesel query

@@ -9,6 +9,7 @@ lazy_static::lazy_static! {
 static ref API_KEY: String = std::env::var("SPARKPOST_API_KEY").expect("SPARKPOST_API_KEY must be set");
 }
 
+#[allow(dead_code)]
 pub fn send_invitation(invitation: &Invitation) -> Result<(), ServiceError> {
     let tm = Transmission::new_eu(API_KEY.as_str());
     let sending_email =
